@@ -1,0 +1,4 @@
+extend type Query {
+    users: [UserResponse]
+    userById(id: ID!): UserResponse
+}

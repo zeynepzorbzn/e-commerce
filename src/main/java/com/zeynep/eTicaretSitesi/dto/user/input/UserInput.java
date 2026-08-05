@@ -11,6 +11,7 @@ public class UserInput extends BaseInput<User> {
     private String email;
     private String password;
     private LocalDate birthDate;
+    private String phoneNumber;
 
     public String getFirstName(){
         return firstName;
@@ -22,7 +23,7 @@ public class UserInput extends BaseInput<User> {
     public String getLastName(){ return lastName; }
     public void setLastName(String lastName){this.lastName =  lastName;}
 
-    public String getEMail() {return email;}
+    public String getEmail() {return email;}
     public void setEmail(String email) {this.email= email;}
 
     public String getPassword() {return password;}
@@ -30,4 +31,8 @@ public class UserInput extends BaseInput<User> {
 
     public LocalDate getBirthDate() { return birthDate;}
     public void setBirthDate(LocalDate birthDate){this.birthDate=birthDate;}
+
+    public String getPhoneNumber() {return phoneNumber;}
+    public void setPhoneNumber(String phoneNumber) {this.phoneNumber= phoneNumber;}
+
 }

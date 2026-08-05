@@ -8,8 +8,11 @@ import com.zeynep.eTicaretSitesi.logic.user.UserLogic;
 import com.zeynep.eTicaretSitesi.mapper.user.UserMapper;
 import com.zeynep.eTicaretSitesi.repo.user.UserRepository;
 import com.zeynep.eTicaretSitesi.service.user.UserService;
+import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.List;
 
@@ -21,9 +24,18 @@ public class UserQuery extends BaseQuery<User, UserInput, Long, UserLogic, UserM
     }
 
     @QueryMapping
-    public List<User> users() {
-        return service.findAll();
+    public List<UserResponse> users() {
+        return service.getAll();
     }
+
+    @QueryMapping
+    public UserResponse userById(@Argument Long id) {
+        return service.getById(id);
+    }
+
+
+
+
 }
 
 

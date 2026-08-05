@@ -1,11 +1,7 @@
-type Query {
-    users: [User]
-}
-
-type User {
+type UserResponse {
     id: ID
     firstName: String
     lastName: String
     email: String
-    birthDate: String
+    birthDate: Date
 }

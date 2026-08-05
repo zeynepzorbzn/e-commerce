@@ -1,0 +1,6 @@
+extend type Mutation {
+    createUser(input: UserInput!): UserResponse
+}
+extend type Mutation {
+    adminTest: String
+}

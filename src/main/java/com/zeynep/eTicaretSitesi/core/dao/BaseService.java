@@ -1,5 +1,8 @@
 package com.zeynep.eTicaretSitesi.core.dao;
 
+import com.zeynep.eTicaretSitesi.dto.user.input.UserInput;
+import com.zeynep.eTicaretSitesi.dto.user.response.UserResponse;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -15,11 +18,6 @@ public abstract class BaseService<E extends BaseEntity, I extends BaseInput<E>, 
         this.logic = logic;
         this.mapper = mapper;
     }
-
-    public E save(E entity) {
-        return (E) repository.save(entity);
-    }
-
     public List<E> findAll() {
         return repository.findAll();
     }
@@ -28,8 +26,31 @@ public abstract class BaseService<E extends BaseEntity, I extends BaseInput<E>, 
         return repository.findById(id);
     }
 
-    public void deleteById(ID id) {
+    public RE createUser(I input) {
+        E entity = mapper.toEntity(input);
+        E savedEntity = repository.save(entity);
+        return mapper.toResponse(savedEntity);
+    }
+    public List<RE> getAll() {
+        return mapper.toResponseList(repository.findAll());
+    }
+
+    public RE getById(ID id) {
+        E entity = logic.findById(id).orElseThrow(() -> new RuntimeException("Entity not found"));
+        return mapper.toResponse(entity);
+    }
+
+    public RE update(ID id, I input){
+        E entity  =repository.findById(id).orElseThrow(() -> new RuntimeException("Entity not found"));
+        mapper.updateEntity(entity, input);
+        E updated =  repository.save(entity);
+        return mapper.toResponse(updated);
+    }
+
+    public void delete(ID id) {
+        repository.findById(id).orElseThrow(() -> new RuntimeException("Entity not found"));
         repository.deleteById(id);
     }
 
+    public abstract UserResponse createUser(UserInput input);
 }
