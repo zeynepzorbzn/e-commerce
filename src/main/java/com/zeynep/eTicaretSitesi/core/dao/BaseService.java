@@ -26,7 +26,7 @@ public abstract class BaseService<E extends BaseEntity, I extends BaseInput<E>, 
         return repository.findById(id);
     }
 
-    public RE createUser(I input) {
+    public RE create(I input) {
         E entity = mapper.toEntity(input);
         E savedEntity = repository.save(entity);
         return mapper.toResponse(savedEntity);
@@ -51,6 +51,4 @@ public abstract class BaseService<E extends BaseEntity, I extends BaseInput<E>, 
         repository.findById(id).orElseThrow(() -> new RuntimeException("Entity not found"));
         repository.deleteById(id);
     }
-
-    public abstract UserResponse createUser(UserInput input);
 }

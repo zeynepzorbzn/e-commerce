@@ -8,6 +8,7 @@ import com.zeynep.eTicaretSitesi.logic.user.UserLogic;
 import com.zeynep.eTicaretSitesi.mapper.user.UserMapper;
 import com.zeynep.eTicaretSitesi.repo.user.UserRepository;
 import com.zeynep.eTicaretSitesi.service.user.UserService;
+import jakarta.validation.Valid;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.stereotype.Controller;
@@ -18,15 +19,17 @@ import org.springframework.security.access.prepost.PreAuthorize;
 public class UserMutation extends BaseMutation<User, UserInput, Long, UserLogic, UserMapper, UserRepository, UserResponse> {
 
     public UserMutation(UserService userService) {
-
         super(userService);
     }
 
-    @MutationMapping
-    public UserResponse createUser(@Argument UserInput input){
-        return service.createUser(input);
 
+    @MutationMapping
+    @PreAuthorize("hasRole('ADMIN')")
+    public UserResponse createUser(@Argument @Valid UserInput input ){
+        return service.create(input);
     }
+
+
     @MutationMapping
     @PreAuthorize("hasRole('ADMIN')")
     public String adminTest() {

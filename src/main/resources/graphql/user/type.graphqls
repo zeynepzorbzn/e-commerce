@@ -5,3 +5,8 @@ type UserResponse {
     email: String
     birthDate: Date
 }
+enum RoleName {
+    USER
+    ADMIN
+    STORE_MANAGER
+}

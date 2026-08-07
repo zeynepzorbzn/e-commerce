@@ -1,0 +1,4 @@
+type BrandResponse {
+    id : ID!
+    name : String!
+}

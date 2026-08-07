@@ -2,4 +2,15 @@ input LoginInput {
     email: String!
     password: String!
 }
+input RegisterInput {
+    firstName: String!
+    lastName: String!
+    email: String!
+    phoneNumber: String!
+    password: String!
+}
+input RefreshInput {
+    refreshToken: String!
+}
+
 

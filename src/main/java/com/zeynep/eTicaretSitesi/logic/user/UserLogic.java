@@ -9,10 +9,17 @@ import com.zeynep.eTicaretSitesi.mapper.user.UserMapper;
 import com.zeynep.eTicaretSitesi.repo.user.UserRepository;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 public class UserLogic extends BaseLogic<User, Long, UserRepository>{
 
     private final UserMapper mapper;
+
+
+    public User save(User user) {
+        return repository.save(user);
+    }
 
     protected UserLogic(UserRepository repository, UserMapper mapper) {
         super(repository);
@@ -23,6 +30,11 @@ public class UserLogic extends BaseLogic<User, Long, UserRepository>{
         //user.setRole(Role.USER);
         return user;
     }
+    public Optional<User> findByEmail(String email) {
+        return repository.findByEmail(email);
+    }
+
+
     public UserResponse toResponse(User user) {
         return mapper.toResponse(user);
     }

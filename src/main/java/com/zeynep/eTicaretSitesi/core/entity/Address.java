@@ -8,16 +8,11 @@ import jakarta.persistence.*;
 public class Address extends BaseEntity {
 
     private String name;
-
     private String city;
-
     private String district;
-
     private String street;
-
     private String postalCode;
-
-    private Boolean billing;
+    private boolean billing;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
@@ -26,59 +21,24 @@ public class Address extends BaseEntity {
     public Address() {
     }
 
-    public String getName() {
-        return name;
-    }
+    public String getName() {return name;}
+    public void setName(String name) {this.name = name;}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public String getCity() {return city;}
+    public void setCity(String city) {this.city = city;}
 
-    public String getCity() {
-        return city;
-    }
+    public String getDistrict() {return district;}
+    public void setDistrict(String district) {this.district = district;}
 
-    public void setCity(String city) {
-        this.city = city;
-    }
+    public String getStreet() {return street;}
+    public void setStreet(String street) {this.street = street;}
 
-    public String getDistrict() {
-        return district;
-    }
+    public String getPostalCode() {return postalCode;}
+    public void setPostalCode(String postalCode) {this.postalCode = postalCode;}
 
-    public void setDistrict(String district) {
-        this.district = district;
-    }
+    public boolean getBilling() {return billing;}
+    public void setBilling(boolean billing) {this.billing = billing;}
 
-    public String getStreet() {
-        return street;
-    }
-
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
-    public String getPostalCode() {
-        return postalCode;
-    }
-
-    public void setPostalCode(String postalCode) {
-        this.postalCode = postalCode;
-    }
-
-    public Boolean getBilling() {
-        return billing;
-    }
-
-    public void setBilling(Boolean billing) {
-        this.billing = billing;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
+    public User getUser() {return user;}
+    public void setUser(User user) {this.user = user;}
 }

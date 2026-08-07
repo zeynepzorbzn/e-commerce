@@ -21,16 +21,16 @@ public class User extends BaseEntity implements UserDetails {
     private LocalDate birthDate;
     private String phoneNumber;
     private String emailVerificationToken;
-    private Boolean emailVerified = false;
+    private boolean emailVerified = false;
     private LocalDateTime emailVerificationExpireDate;
-    private Boolean locked = false;
+    private boolean locked = false;
     @Column(unique = true, nullable = false)
     private String email;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<Address> addresses;
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
     private Cart cart;
@@ -38,6 +38,10 @@ public class User extends BaseEntity implements UserDetails {
     private List<PaymentMethod> paymentMethods;
     @OneToOne(mappedBy = "owner", fetch = FetchType.LAZY)
     private Store store;
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Order> orders;
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<AiSuggestionSession> aiSuggestionSessions;
 
 
     public User () {
@@ -81,15 +85,15 @@ public class User extends BaseEntity implements UserDetails {
     public void setEmailVerificationToken(String emailVerificationToken) {
         this.emailVerificationToken = emailVerificationToken;}
 
-    public Boolean getEmailVerified() {return emailVerified;}
-    public void setEmailVerified(Boolean emailVerified) {this.emailVerified = emailVerified;}
+    public boolean getEmailVerified() {return emailVerified;}
+    public void setEmailVerified(boolean emailVerified) {this.emailVerified = emailVerified;}
 
     public LocalDateTime getEmailVerificationExpireDate() {return emailVerificationExpireDate;}
     public void setEmailVerificationExpireDate(LocalDateTime emailVerificationExpireDate) {
         this.emailVerificationExpireDate = emailVerificationExpireDate;}
 
-    public Boolean getLocked() {return locked;}
-    public void setLocked(Boolean locked) {this.locked = locked;}
+    public boolean getLocked() {return locked;}
+    public void setLocked(boolean locked) {this.locked = locked;}
 
     public Cart getCart() {return cart;}
     public void setCart(Cart cart) {this.cart = cart;}
@@ -102,6 +106,12 @@ public class User extends BaseEntity implements UserDetails {
 
     public Store getStore(){return store;}
     public void setStore(Store store){this.store = store;}
+
+    public List<Order> getOrders() {return orders;}
+    public void setOrders(List<Order> orders) {this.orders = orders;}
+
+    public List<AiSuggestionSession> getAiSuggestionSessions() {return aiSuggestionSessions;}
+    public void setAiSuggestionSessions(List<AiSuggestionSession> aiSuggestionSessions) {this.aiSuggestionSessions = aiSuggestionSessions;}
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -121,6 +131,7 @@ public class User extends BaseEntity implements UserDetails {
 
     @Override
     public boolean isEnabled() {return true;}
+
 
 
 }

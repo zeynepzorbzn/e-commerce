@@ -5,5 +5,5 @@ input UserInput {
     password: String!
     birthDate: Date!
     phoneNumber : String!
-
+    role: RoleName!
 }

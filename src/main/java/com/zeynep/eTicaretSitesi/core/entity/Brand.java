@@ -12,7 +12,7 @@ public class Brand extends BaseEntity {
     @Column(nullable = false, unique = true)
     private String name;
     @OneToMany(mappedBy = "brand", fetch = FetchType.LAZY)
-    private List<Product> products;
+    private List<Product> brandProducts;
 
     public Brand() {
     }
@@ -20,6 +20,6 @@ public class Brand extends BaseEntity {
     public String getName() {return name;}
     public void setName(String name) {this.name = name;}
 
-    public List<Product> getProducts() {return products;}
-    public void setProducts(List<Product> products) {this.products = products;}
+    public List<Product> getBrandProducts() {return brandProducts;}
+    public void setBrandProducts(List<Product> brandProducts) {this.brandProducts = brandProducts;}
 }

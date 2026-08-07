@@ -3,6 +3,8 @@ package com.zeynep.eTicaretSitesi.core.entity;
 import com.zeynep.eTicaretSitesi.core.dao.BaseEntity;
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "product_variants")
 public class ProductVariant extends BaseEntity {
@@ -14,6 +16,8 @@ public class ProductVariant extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
+    @OneToMany(mappedBy = "productVariant", fetch = FetchType.LAZY)
+    private List<OrderItem> orderItems;
 
     public ProductVariant() {
     }
@@ -29,4 +33,7 @@ public class ProductVariant extends BaseEntity {
 
     public Product getProduct() {return product;}
     public void setProduct(Product product) {this.product = product;}
+
+    public List<OrderItem> getOrderItems() {return orderItems;}
+    public void setOrderItems(List<OrderItem> orderItems) {this.orderItems = orderItems;}
 }

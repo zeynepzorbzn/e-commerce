@@ -1,3 +1,11 @@
 type LoginResponse {
-    token: String!
+    accessToken: String!
+    refreshToken: String!
+}
+type RegisterResponse {
+    accessToken: String!
+    refreshToken: String!
+}
+type RefreshResponse {
+    accessToken: String!
 }

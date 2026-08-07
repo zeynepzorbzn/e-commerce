@@ -13,7 +13,7 @@ public class PaymentMethod extends BaseEntity {
     private String lastFourDigits;
     private Integer expireMonth;
     private Integer expireYear;
-    private Boolean isDefault = false;
+    private boolean isDefault = false;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
@@ -39,8 +39,8 @@ public class PaymentMethod extends BaseEntity {
     public Integer getExpireYear() {return expireYear;}
     public void setExpireYear(Integer expireYear) {this.expireYear = expireYear;}
 
-    public Boolean getDefault() {return isDefault;}
-    public void setDefault(Boolean aDefault) {isDefault = aDefault;}
+    public boolean getDefault() {return isDefault;}
+    public void setDefault(boolean isDefault) {this.isDefault = isDefault;}
 
     public User getUser() {return user;}
     public void setUser(User user) {this.user = user;}
