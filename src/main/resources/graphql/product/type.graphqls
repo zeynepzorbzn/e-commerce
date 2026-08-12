@@ -1,0 +1,12 @@
+type ProductResponse {
+    id: ID!
+    name: String!
+    description: String
+    price: Float!
+    gender: String
+    season: String
+    storeName: String
+    brandName: String
+    categoryName: String
+    variants: [ProductVariantResponse!]!
+}

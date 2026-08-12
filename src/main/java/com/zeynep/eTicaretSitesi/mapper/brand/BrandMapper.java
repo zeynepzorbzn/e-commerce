@@ -29,8 +29,6 @@ public class BrandMapper extends BaseMapper<Brand, BrandInput, BrandResponse> {
     }
     @Override
     public List<BrandResponse> toResponseList(List<Brand> brands) {
-        return brands.stream()
-                .map(this::toResponse)
-                .toList();
+        return brands.stream().map(this::toResponse).toList();
     }
 }

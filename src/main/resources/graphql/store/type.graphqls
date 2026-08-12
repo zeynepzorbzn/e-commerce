@@ -1,0 +1,11 @@
+type StoreResponse {
+    id: ID
+    name: String
+    email: String
+    phoneNumber: String
+    ownerName: String
+    city: String
+    district: String
+    street: String
+    postalCode: String
+}

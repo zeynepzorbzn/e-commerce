@@ -1,7 +1,6 @@
 package com.zeynep.eTicaretSitesi.core.dao;
 
-import com.zeynep.eTicaretSitesi.dto.user.input.UserInput;
-import com.zeynep.eTicaretSitesi.dto.user.response.UserResponse;
+
 
 import java.util.List;
 import java.util.Optional;

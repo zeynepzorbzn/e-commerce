@@ -1,0 +1,8 @@
+type ProductVariantResponse {
+    id: ID!
+    size: String!
+    stock: Int!
+    color: String!
+    productId: ID!
+    productName: String!
+}

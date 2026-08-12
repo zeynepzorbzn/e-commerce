@@ -1,12 +1,19 @@
 package com.zeynep.eTicaretSitesi.mapper.product;
 
+import com.zeynep.eTicaretSitesi.core.dao.BaseMapper;
+import com.zeynep.eTicaretSitesi.core.entity.Category;
 import com.zeynep.eTicaretSitesi.core.entity.Product;
+import com.zeynep.eTicaretSitesi.dto.category.CategoryInput;
+import com.zeynep.eTicaretSitesi.dto.category.CategoryResponse;
 import com.zeynep.eTicaretSitesi.dto.product.input.ProductInput;
 import com.zeynep.eTicaretSitesi.dto.product.response.ProductResponse;
+import com.zeynep.eTicaretSitesi.dto.productVariant.ProductVariantResponse;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
-public class ProductMapper {
+public class ProductMapper extends BaseMapper<Product, ProductInput, ProductResponse> {
 
     public Product toEntity(ProductInput input) {
 
@@ -33,7 +40,24 @@ public class ProductMapper {
         response.setStoreName(product.getStore().getName());
         response.setBrandName(product.getBrand().getName());
         response.setCategoryName(product.getCategory().getName());
+        response.setVariants(product.getVariants().stream().map(variant ->
+        {ProductVariantResponse variantResponse = new ProductVariantResponse();
+            variantResponse.setId(variant.getId());
+            variantResponse.setSize(variant.getSize());
+            variantResponse.setColor(variant.getColor());
+            variantResponse.setStock(variant.getStock());
+            variantResponse.setProductId(product.getId());
+            variantResponse.setProductName(product.getName());
 
-        return response;
+            return variantResponse;}).toList());
+            return response;
+    }
+    @Override
+    public void updateEntity(Product entity, ProductInput input) {
+        entity.setName(input.getName());
+    }
+    @Override
+    public List<ProductResponse> toResponseList(List<Product> product) {
+        return product.stream().map(this::toResponse).toList();
     }
 }

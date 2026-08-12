@@ -1,0 +1,6 @@
+input ProductVariantInput {
+    productId: ID!
+    size: String!
+    stock: Int!
+    color: String!
+}

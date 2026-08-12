@@ -1,8 +1,11 @@
 package com.zeynep.eTicaretSitesi.dto.product.input;
 
+import com.zeynep.eTicaretSitesi.core.dao.BaseInput;
+import com.zeynep.eTicaretSitesi.core.entity.Product;
+
 import java.math.BigDecimal;
 
-public class ProductInput {
+public class ProductInput extends BaseInput<Product> {
 
     private String name;
     private String description;

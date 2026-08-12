@@ -1,0 +1,4 @@
+extend type Query {
+    getProductVariants: [ProductVariantResponse!]!
+    getProductVariantById(id: ID!): ProductVariantResponse
+}

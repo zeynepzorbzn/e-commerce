@@ -1,0 +1,4 @@
+input CartItemInput {
+    productVariantId: ID!
+    quantity: Int!
+}

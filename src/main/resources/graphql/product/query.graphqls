@@ -1,0 +1,4 @@
+extend type Query {
+    getProduct(id: ID!): ProductResponse
+    getProducts: [ProductResponse!]!
+}

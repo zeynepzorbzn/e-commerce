@@ -1,0 +1,8 @@
+type OrderResponse {
+    id: ID!
+    code: String!
+    totalPrice: BigDecimal!
+    productCount: Int!
+    userId: ID
+    orderItems: [OrderItemResponse!]!
+}

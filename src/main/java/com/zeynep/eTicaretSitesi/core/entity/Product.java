@@ -8,6 +8,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "products")
+
 public class Product extends BaseEntity {
 
     @Column(nullable = false)
@@ -39,6 +40,9 @@ public class Product extends BaseEntity {
 
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     private List<ProductImage> productImages;
+
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+    private List<ProductVariant> variants;
 
     public Product() {
     }
@@ -72,4 +76,7 @@ public class Product extends BaseEntity {
 
     public List<ProductImage> getProductImages() {return productImages;}
     public void setProductImages(List<ProductImage> productImages) {this.productImages = productImages;}
+
+    public List<ProductVariant> getVariants() {return variants;}
+    public void setVariants(List<ProductVariant> variants) { this.variants = variants;}
 }

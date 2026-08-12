@@ -50,9 +50,10 @@ public class AuthService {
         User savedUser = userLogic.save(user);
         String accessToken = jwtService.generateAccessToken(savedUser);
         String refreshToken = jwtService.generateRefreshToken(savedUser);
-        return new RegisterResponse(accessToken, refreshToken);
-
+        return new RegisterResponse( savedUser.getId(), savedUser.getFirstName(), savedUser.getLastName(), savedUser.getEmail(),
+                savedUser.getPhoneNumber(), savedUser.getRole().getName(), accessToken, refreshToken);
     }
+
     public RefreshResponse refreshToken(RefreshInput input){
 
         String refreshToken = input.getRefreshToken();

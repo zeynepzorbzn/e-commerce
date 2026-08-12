@@ -10,7 +10,4 @@ public abstract class BaseMapper <E extends BaseEntity,  I extends BaseInput<E>,
     public abstract RE toResponse(E entity);
     public abstract List<RE> toResponseList(List<E> entities);
 
-
-
-
 }

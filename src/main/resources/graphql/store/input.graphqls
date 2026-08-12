@@ -1,0 +1,11 @@
+input StoreInput {
+    name: String!
+    email: String!
+    phoneNumber: String!
+    ownerId: ID!
+    city: String
+    district: String!
+    street: String!
+    postalCode: String!
+
+}

@@ -2,10 +2,18 @@ type LoginResponse {
     accessToken: String!
     refreshToken: String!
 }
+
 type RegisterResponse {
+    id: ID!
+    firstName: String!
+    lastName: String!
+    email: String!
+    phoneNumber: String!
+    roleName: RoleName!
     accessToken: String!
     refreshToken: String!
 }
+
 type RefreshResponse {
     accessToken: String!
 }

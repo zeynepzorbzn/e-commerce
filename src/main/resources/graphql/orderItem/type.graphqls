@@ -1,0 +1,9 @@
+type OrderItemResponse {
+    id: ID!
+    quantity: Int!
+    unitPrice: BigDecimal!
+    productVariantId: ID!
+    productName: String!
+    size: String!
+    color: String!
+}

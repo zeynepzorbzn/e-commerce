@@ -1,0 +1,4 @@
+type CategoryResponse {
+    id: ID
+    name: String
+}

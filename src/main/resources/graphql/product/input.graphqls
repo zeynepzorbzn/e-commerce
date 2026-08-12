@@ -1,0 +1,11 @@
+input ProductInput {
+    name: String!
+    description: String
+    price: Float!
+    gender: String
+    season: String
+    storeId: ID!
+    brandId: ID!
+    categoryId: ID!
+
+}

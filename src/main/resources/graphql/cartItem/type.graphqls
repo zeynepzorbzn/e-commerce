@@ -1,0 +1,9 @@
+type CartItemResponse {
+    id: ID!
+    quantity: Int!
+    totalPrice: BigDecimal!
+    productVariantId: ID!
+    productName: String!
+    size: String!
+    color: String!
+}
