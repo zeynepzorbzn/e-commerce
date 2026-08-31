@@ -143,9 +143,9 @@ public class OrderService extends BaseService<Order, OrderInput, Long, OrderLogi
             OrderItem savedOrderItem = orderItemRepository.save(orderItem);
             orderItems.add(savedOrderItem);
 
-            /*
-             * Stok düş.
-             */
+
+             //Stok düş.
+
             variant.setStock(variant.getStock() - cartItem.getQuantity());
             productVariantRepository.save(variant);
             /*
@@ -176,5 +176,21 @@ public class OrderService extends BaseService<Order, OrderInput, Long, OrderLogi
         cartRepository.save(cart);
 
         return logic.toResponse(finalOrder);
+    }
+
+    public List<OrderResponse> getMyOrders() {
+
+        Authentication authentication =
+                SecurityContextHolder
+                        .getContext()
+                        .getAuthentication();
+
+        User user =
+                (User) authentication.getPrincipal();
+
+        List<Order> orders =
+                repository.findMyOrders(user.getId());
+
+        return mapper.toResponseList(orders);
     }
 }

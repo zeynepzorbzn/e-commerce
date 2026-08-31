@@ -32,7 +32,7 @@ public class AuthService {
             throw new BadCredentialsException("Email veya şifre hatalı.");}
         String accessToken = jwtService.generateAccessToken(user);
         String refreshToken = jwtService.generateRefreshToken(user);
-        return new LoginResponse(accessToken, refreshToken);
+        return new LoginResponse(accessToken, refreshToken, user.getRole().getName());
     }
 
     public RegisterResponse register(RegisterInput input) {

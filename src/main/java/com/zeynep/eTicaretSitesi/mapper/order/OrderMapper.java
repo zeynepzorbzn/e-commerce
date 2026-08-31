@@ -25,8 +25,16 @@ public class OrderMapper extends BaseMapper<Order, OrderInput, OrderResponse> {
         response.setTotalPrice(order.getTotalPrice());
         response.setProductCount(order.getProductCount());
 
-    if (order.getUser() != null) {
-       response.setUserId(order.getUser().getId());}
+        if (order.getUser() != null) {
+            response.setUserId(order.getUser().getId());}
+
+        if (order.getAddress() != null) {
+            response.setAddressId(order.getAddress().getId());
+        }
+        if (order.getPaymentMethod() != null) {
+            response.setPaymentMethodId(order.getPaymentMethod().getId());
+        }
+
     if (order.getOrderItems() != null) {
         response.setOrderItems(order.getOrderItems().stream().map(item -> {OrderItemResponse itemResponse = new OrderItemResponse();
             itemResponse.setId(item.getId());
