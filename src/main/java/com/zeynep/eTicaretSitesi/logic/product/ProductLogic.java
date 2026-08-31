@@ -8,6 +8,8 @@ import com.zeynep.eTicaretSitesi.mapper.product.ProductMapper;
 import com.zeynep.eTicaretSitesi.repo.product.ProductRepository;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class ProductLogic extends BaseLogic<Product, Long, ProductRepository> {
 
@@ -25,6 +27,10 @@ public class ProductLogic extends BaseLogic<Product, Long, ProductRepository> {
 
     public ProductResponse toResponse(Product product) {
         return mapper.toResponse(product);
+    }
+
+    public List<Product> getByCategoryId(Long categoryId) {
+        return repository.findByCategory_Id(categoryId);
     }
 
 }

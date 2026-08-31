@@ -1,0 +1,6 @@
+extend type Mutation {
+    addProductImage(
+        productId: ID!
+        imageToken: String!
+    ): ProductImageResponse
+}

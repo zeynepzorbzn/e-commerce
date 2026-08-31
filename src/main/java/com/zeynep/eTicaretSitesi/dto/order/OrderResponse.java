@@ -15,6 +15,8 @@ public class OrderResponse extends BaseResponse<Order> {
     private Integer productCount;
     private Long userId;
     private List<OrderItemResponse> orderItems;
+    private Long addressId;
+    private Long paymentMethodId;
 
     public OrderResponse() {
     }
@@ -65,5 +67,21 @@ public class OrderResponse extends BaseResponse<Order> {
 
     public void setOrderItems(List<OrderItemResponse> orderItems) {
         this.orderItems = orderItems;
+    }
+
+    public Long getAddressId() {
+        return addressId;
+    }
+
+    public void setAddressId(Long addressId) {
+        this.addressId = addressId;
+    }
+
+    public Long getPaymentMethodId() {
+        return paymentMethodId;
+    }
+
+    public void setPaymentMethodId(Long paymentMethodId) {
+        this.paymentMethodId = paymentMethodId;
     }
 }

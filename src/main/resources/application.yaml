@@ -21,6 +21,9 @@ spring:
 server:
   port: 8000
 
+file-service:
+  url: http://localhost:8001
+
 jwt:
   secret: Qm9yN2xYV2R4TnJzVjVhSzJQeEZtY0p4OE5iU3dLdFlwUmhWcUZnWA==
   access-expiration: 3600000

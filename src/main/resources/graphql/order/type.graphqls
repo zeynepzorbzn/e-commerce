@@ -4,5 +4,8 @@ type OrderResponse {
     totalPrice: BigDecimal!
     productCount: Int!
     userId: ID
+    addressId: ID
+    paymentMethodId : ID
     orderItems: [OrderItemResponse!]!
+
 }

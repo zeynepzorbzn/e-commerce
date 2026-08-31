@@ -3,4 +3,5 @@ type CartResponse {
     totalPrice: BigDecimal!
     productCount: Int!
     userId: ID!
+    items: [CartItemResponse!]!
 }

@@ -6,11 +6,15 @@ import com.zeynep.eTicaretSitesi.dto.order.OrderInput;
 import com.zeynep.eTicaretSitesi.dto.order.OrderResponse;
 import com.zeynep.eTicaretSitesi.logic.order.OrderLogic;
 import com.zeynep.eTicaretSitesi.mapper.order.OrderMapper;
+import com.zeynep.eTicaretSitesi.repo.address.AddressRepository;
+import com.zeynep.eTicaretSitesi.repo.cart.CartRepository;
+import com.zeynep.eTicaretSitesi.repo.cartItem.CartItemRepository;
 import com.zeynep.eTicaretSitesi.repo.order.OrderRepository;
 import com.zeynep.eTicaretSitesi.repo.orderItem.OrderItemRepository;
-import com.zeynep.eTicaretSitesi.repo.cartItem.CartItemRepository;
-import com.zeynep.eTicaretSitesi.repo.cart.CartRepository;
+import com.zeynep.eTicaretSitesi.repo.paymentMethod.PaymentMethodRepository;
 import com.zeynep.eTicaretSitesi.repo.productVariant.ProductVariantRepository;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,68 +30,149 @@ public class OrderService extends BaseService<Order, OrderInput, Long, OrderLogi
     private final CartItemRepository cartItemRepository;
     private final OrderItemRepository orderItemRepository;
     private final ProductVariantRepository productVariantRepository;
+    private final AddressRepository addressRepository;
+    private final PaymentMethodRepository paymentMethodRepository;
 
-    public OrderService(OrderRepository repository, OrderLogic logic, OrderMapper mapper, CartRepository cartRepository,
-           CartItemRepository cartItemRepository, OrderItemRepository orderItemRepository, ProductVariantRepository productVariantRepository) {
+    public OrderService(OrderRepository repository, OrderLogic logic, OrderMapper mapper, CartRepository cartRepository, CartItemRepository cartItemRepository, OrderItemRepository orderItemRepository,
+             ProductVariantRepository productVariantRepository, AddressRepository addressRepository, PaymentMethodRepository paymentMethodRepository) {
 
         super(repository, logic, mapper);
+
         this.cartRepository = cartRepository;
         this.cartItemRepository = cartItemRepository;
         this.orderItemRepository = orderItemRepository;
         this.productVariantRepository = productVariantRepository;
+        this.addressRepository = addressRepository;
+        this.paymentMethodRepository = paymentMethodRepository;
     }
 
     @Transactional
     @Override
     public OrderResponse create(OrderInput input) {
+
+        /*
+         * JWT'den giriş yapan kullanıcıyı alıyoruz.
+         */
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getPrincipal();
+        /*
+         * Kullanıcının sepetini bul.
+         */
         Cart cart = cartRepository.findById(input.getCartId()).orElseThrow(() -> new RuntimeException("Sepet bulunamadı."));
-
-        if (cart.getItems() == null || cart.getItems().isEmpty()) {
-            throw new RuntimeException("Sepet boş.");
+        /*
+         * Cart gerçekten bu kullanıcıya mı ait?
+         */
+        if (!cart.getUser().getId().equals(user.getId())) {
+            throw new RuntimeException("Bu sepete erişim yetkiniz yok.");
         }
-        Order order = new Order();
-        order.setCode("ORD-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase());
-        order.setUser(cart.getUser());
-        order.setTotalPrice(cart.getTotalPrice());
-        order.setProductCount(cart.getProductCount());
+        /*
+         * Sepet boş mu?
+         */
+        if (cart.getItems() == null || cart.getItems().isEmpty()) {throw new RuntimeException("Sepet boş.");
+        }
+        /*
+         * Seçilen adres gerçekten kullanıcıya mı ait?
+         */
+        Address address = addressRepository.findByIdAndUserId(input.getAddressId(), user.getId()).orElseThrow(() -> new RuntimeException("Teslimat adresi bulunamadı."));
+        /*
+         * Seçilen ödeme yöntemi gerçekten kullanıcıya mı ait?
+         */
+        PaymentMethod paymentMethod = paymentMethodRepository.findByIdAndUserId(input.getPaymentMethodId(), user.getId()).orElseThrow(() ->
+                new RuntimeException("Ödeme yöntemi bulunamadı."));
 
+        if (!address.getUser().getId().equals(user.getId())) {
+            throw new RuntimeException("Bu adres size ait değil.");
+        }
+
+        if (!paymentMethod.getUser().getId().equals(user.getId())) {
+            throw new RuntimeException("Bu ödeme yöntemi size ait değil.");
+        }
+
+        /*
+         * Order oluştur.
+         */
+        Order order = new Order();
+
+        order.setCode("ORD-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase());
+        order.setUser(user);
+        order.setAddress(address);
+        order.setPaymentMethod(paymentMethod);
+
+        /*
+         * Aşağıdaki değerler tekrar hesaplanacak.
+         */
+        order.setTotalPrice(BigDecimal.ZERO);
+        order.setProductCount(0);
         Order savedOrder = repository.save(order);
+
         BigDecimal totalPrice = BigDecimal.ZERO;
+
         int productCount = 0;
+
         List<OrderItem> orderItems = new ArrayList<>();
 
+        /*
+         * CartItem -> OrderItem
+         */
         for (CartItem cartItem : cart.getItems()) {
-
-          ProductVariant variant = cartItem.getProductVariant();
+            ProductVariant variant = cartItem.getProductVariant();
+            /*
+             * Stok kontrolü.
+             */
             if (variant.getStock() < cartItem.getQuantity()) {
                 throw new RuntimeException("Yeterli stok yok: " + variant.getProduct().getName());
             }
+            /*
+             * OrderItem oluştur.
+             */
             OrderItem orderItem = new OrderItem();
             orderItem.setOrder(savedOrder);
             orderItem.setProductVariant(variant);
             orderItem.setQuantity(cartItem.getQuantity());
-
+            /*
+             * Snapshot price:
+             *
+             * Sipariş oluşturulduğu andaki
+             * ürün fiyatını OrderItem'a yazıyoruz.
+             *
+             * Ürün fiyatı daha sonra değişse bile
+             * eski siparişin fiyatı değişmeyecek.
+             */
             BigDecimal unitPrice = variant.getProduct().getPrice();
             orderItem.setUnitPrice(unitPrice);
             OrderItem savedOrderItem = orderItemRepository.save(orderItem);
-
             orderItems.add(savedOrderItem);
+
+            /*
+             * Stok düş.
+             */
             variant.setStock(variant.getStock() - cartItem.getQuantity());
             productVariantRepository.save(variant);
+            /*
+             * Toplam hesapla.
+             */
             BigDecimal itemTotal = unitPrice.multiply(BigDecimal.valueOf(cartItem.getQuantity()));
             totalPrice = totalPrice.add(itemTotal);
             productCount += cartItem.getQuantity();
         }
-
+        /*
+         * Order toplamlarını kaydet.
+         */
         savedOrder.setTotalPrice(totalPrice);
         savedOrder.setProductCount(productCount);
         savedOrder.setOrderItems(orderItems);
-        Order finalOrder = repository.save(savedOrder);
 
-        // Cart'ı temizle
+        Order finalOrder = repository.save(savedOrder);
+        /*
+         * Sipariş oluşturulduktan sonra
+         * cart temizlenir.
+         */
         cartItemRepository.deleteAll(cart.getItems());
+
         cart.setTotalPrice(BigDecimal.ZERO);
+
         cart.setProductCount(0);
+
         cartRepository.save(cart);
 
         return logic.toResponse(finalOrder);

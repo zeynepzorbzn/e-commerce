@@ -36,9 +36,6 @@ public class Product extends BaseEntity {
     private Category category;
 
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
-    private List<ProductVariant> productVariants;
-
-    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     private List<ProductImage> productImages;
 
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
@@ -70,10 +67,7 @@ public class Product extends BaseEntity {
 
     public Category getCategory() {return category;}
     public void setCategory(Category category) {this.category = category;}
-
-    public List<ProductVariant> getProductVariants() {return productVariants;}
-    public void setProductVariants(List<ProductVariant> productVariants) {this.productVariants = productVariants;}
-
+    
     public List<ProductImage> getProductImages() {return productImages;}
     public void setProductImages(List<ProductImage> productImages) {this.productImages = productImages;}
 

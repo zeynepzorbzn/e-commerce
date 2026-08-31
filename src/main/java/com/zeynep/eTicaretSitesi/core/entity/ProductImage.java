@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 @Table(name = "product_images")
 public class ProductImage extends BaseEntity {
 
+    @Column(nullable = false)
     private String imageToken;
 
     @ManyToOne(fetch = FetchType.LAZY)

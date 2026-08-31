@@ -1,0 +1,5 @@
+type ProductImageResponse {
+    id: ID!
+    imageToken: String!
+    productId: ID!
+}

@@ -16,8 +16,26 @@ public class CartItemMutation {
 
     @MutationMapping
     @PreAuthorize("hasRole('USER')")
+    public CartItemResponse addToCart(
+            @Argument CartItemInput input
+    ) {
+        return cartItemService.addToCart(input);
+    }
 
-    public CartItemResponse addToCart(@Argument Long cartId, @Argument CartItemInput input) {
-    return cartItemService.addToCart(cartId, input);
+    @MutationMapping
+    @PreAuthorize("hasRole('USER')")
+    public CartItemResponse updateCartItemQuantity(
+            @Argument Long cartItemId,
+            @Argument Integer quantity
+    ) {
+        return cartItemService.updateQuantity(cartItemId, quantity);
+    }
+
+    @MutationMapping
+    @PreAuthorize("hasRole('USER')")
+    public Boolean removeFromCart(
+            @Argument Long cartItemId
+    ) {
+        return cartItemService.removeFromCart(cartItemId);
     }
 }

@@ -15,7 +15,9 @@ import com.zeynep.eTicaretSitesi.mapper.product.ProductMapper;
 import com.zeynep.eTicaretSitesi.repo.product.ProductRepository;
 import org.springframework.stereotype.Service;
 
- @Service
+import java.util.List;
+
+@Service
  public class ProductService extends BaseService <Product, ProductInput, Long, ProductLogic, ProductMapper, ProductRepository, ProductResponse>  {
 
      private final BrandLogic brandLogic;
@@ -46,5 +48,9 @@ import org.springframework.stereotype.Service;
 
          Product savedProduct = repository.save(product);
          return logic.toResponse(savedProduct);
+     }
+
+     public List<ProductResponse> getByCategoryId(Long categoryId) {
+         return logic.getByCategoryId(categoryId).stream().map(logic::toResponse).toList();
      }
  }

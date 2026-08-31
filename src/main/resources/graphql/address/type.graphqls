@@ -1,0 +1,9 @@
+type AddressResponse {
+    id: ID!
+    name: String!
+    city: String!
+    district: String!
+    street: String!
+    postalCode: String!
+    billing: Boolean!
+}

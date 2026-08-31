@@ -2,8 +2,10 @@ type CartItemResponse {
     id: ID!
     quantity: Int!
     totalPrice: BigDecimal!
+    productId: ID!
     productVariantId: ID!
     productName: String!
     size: String!
     color: String!
+    imageToken: String
 }

@@ -9,13 +9,19 @@ import com.zeynep.eTicaretSitesi.mapper.category.CategoryMapper;
 import com.zeynep.eTicaretSitesi.repo.category.CategoryRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CategoryService extends BaseService<Category, CategoryInput, Long, CategoryLogic, CategoryMapper, CategoryRepository, CategoryResponse>
 {
-    public CategoryService(CategoryRepository repository, CategoryLogic logic, CategoryMapper mapper ){
-
+    public CategoryService(
+            CategoryRepository repository,
+            CategoryLogic logic,
+            CategoryMapper mapper
+    ) {
         super(repository, logic, mapper);
     }
+
     @Override
     public CategoryResponse create(CategoryInput input) {
 
@@ -25,5 +31,7 @@ public class CategoryService extends BaseService<Category, CategoryInput, Long, 
         return logic.toResponse(savedCategory);
     }
 
-
+    public List<CategoryResponse> getAll() {
+        return mapper.toResponseList(repository.findAll());
+    }
 }

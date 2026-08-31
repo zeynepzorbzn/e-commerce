@@ -9,4 +9,5 @@ type ProductResponse {
     brandName: String
     categoryName: String
     variants: [ProductVariantResponse!]!
+    images: [ProductImageResponse]
 }

@@ -1,6 +1,12 @@
-extend type Mutation{
-    addToCart(
-        cartId: ID!
-        input: CartItemInput!
+extend type Mutation {
+    addToCart(input: CartItemInput!): CartItemResponse!
+
+    updateCartItemQuantity(
+        cartItemId: ID!
+        quantity: Int!
     ): CartItemResponse!
+
+    removeFromCart(
+        cartItemId: ID!
+    ): Boolean!
 }

@@ -62,8 +62,13 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(
                         session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        .authorizeHttpRequests(auth -> auth.requestMatchers("/graphql").permitAll()
-        .anyRequest().authenticated()).exceptionHandling(exception -> exception
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(
+                                "/graphql"
+                        ).permitAll()
+                        .anyRequest().authenticated()
+                )
+                .exceptionHandling(exception -> exception
         .authenticationEntryPoint(authenticationEntryPoint).accessDeniedHandler(accessDeniedHandler))
         .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();

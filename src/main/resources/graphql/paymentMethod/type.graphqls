@@ -1,0 +1,10 @@
+type PaymentMethodResponse {
+    id: ID!
+    maskedCardNumber: String!
+    cardHolder: String!
+    provider: String
+    lastFourDigits: String!
+    expireMonth: Int!
+    expireYear: Int!
+    isDefault: Boolean!
+}

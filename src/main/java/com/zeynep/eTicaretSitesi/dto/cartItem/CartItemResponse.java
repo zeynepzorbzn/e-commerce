@@ -11,10 +11,12 @@ public class CartItemResponse extends BaseResponse<CartItem> {
     private Integer quantity;
     private BigDecimal totalPrice;
 
+    private Long productId;
     private Long productVariantId;
     private String productName;
     private String size;
     private String color;
+    private String imageToken;
 
     public CartItemResponse() {
     }
@@ -39,4 +41,15 @@ public class CartItemResponse extends BaseResponse<CartItem> {
 
     public String getColor() {return color;}
     public void setColor(String color) {this.color = color;}
+
+    public Long getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Long productId) {
+        this.productId = productId;
+    }
+
+    public String getImageToken() {return imageToken;}
+    public void setImageToken(String imageToken) {this.imageToken = imageToken;}
 }

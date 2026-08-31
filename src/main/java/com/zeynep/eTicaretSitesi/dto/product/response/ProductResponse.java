@@ -2,6 +2,7 @@ package com.zeynep.eTicaretSitesi.dto.product.response;
 
 import com.zeynep.eTicaretSitesi.core.dao.BaseResponse;
 import com.zeynep.eTicaretSitesi.core.entity.Product;
+import com.zeynep.eTicaretSitesi.dto.productImage.ProductImageResponse;
 import com.zeynep.eTicaretSitesi.dto.productVariant.ProductVariantResponse;
 
 import java.math.BigDecimal;
@@ -20,6 +21,7 @@ public class ProductResponse extends BaseResponse<Product> {
     private String brandName;
     private String categoryName;
     private List<ProductVariantResponse> variants;
+    private List<ProductImageResponse> images;
 
     public ProductResponse() {
     }
@@ -53,4 +55,12 @@ public class ProductResponse extends BaseResponse<Product> {
 
     public List<ProductVariantResponse> getVariants() {return variants;}
     public void setVariants(List<ProductVariantResponse> variants) {this.variants = variants;}
+
+    public List<ProductImageResponse> getImages() {
+        return images;
+    }
+
+    public void setImages(List<ProductImageResponse> images) {
+        this.images = images;
+    }
 }

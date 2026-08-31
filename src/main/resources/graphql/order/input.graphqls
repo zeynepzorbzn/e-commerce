@@ -1,3 +1,5 @@
 input OrderInput {
     cartId: ID!
+    addressId: ID!
+    paymentMethodId: ID!
 }

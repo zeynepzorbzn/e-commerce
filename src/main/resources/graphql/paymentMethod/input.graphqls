@@ -1,0 +1,7 @@
+input PaymentMethodInput {
+    cardNumber: String!
+    cardHolder: String!
+    expireMonth: Int!
+    expireYear: Int!
+    isDefault: Boolean!
+}

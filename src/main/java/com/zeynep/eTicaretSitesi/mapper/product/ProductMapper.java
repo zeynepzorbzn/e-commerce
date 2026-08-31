@@ -9,6 +9,7 @@ import com.zeynep.eTicaretSitesi.dto.product.input.ProductInput;
 import com.zeynep.eTicaretSitesi.dto.product.response.ProductResponse;
 import com.zeynep.eTicaretSitesi.dto.productVariant.ProductVariantResponse;
 import org.springframework.stereotype.Component;
+import com.zeynep.eTicaretSitesi.dto.productImage.ProductImageResponse;
 
 import java.util.List;
 
@@ -50,6 +51,28 @@ public class ProductMapper extends BaseMapper<Product, ProductInput, ProductResp
             variantResponse.setProductName(product.getName());
 
             return variantResponse;}).toList());
+        response.setImages(
+                product.getProductImages()
+                        .stream()
+                        .map(image -> {
+
+                            ProductImageResponse imageResponse =
+                                    new ProductImageResponse();
+
+                            imageResponse.setId(image.getId());
+                            imageResponse.setImageToken(image.getImageToken());
+
+                            if (image.getProduct() != null) {
+                                imageResponse.setProductId(
+                                        image.getProduct().getId()
+                                );
+                            }
+
+                            return imageResponse;
+
+                        })
+                        .toList()
+        );
             return response;
     }
     @Override

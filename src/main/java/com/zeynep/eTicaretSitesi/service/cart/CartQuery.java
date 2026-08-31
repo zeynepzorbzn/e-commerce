@@ -17,7 +17,7 @@ public class CartQuery {
 
     @QueryMapping
     @PreAuthorize("hasRole('USER')")
-    public CartResponse getCartByUserId(@Argument Long userId) {
-        return cartService.getByUserId(userId);
+    public CartResponse getMyCart() {
+        return cartService.getByUser();
     }
 }

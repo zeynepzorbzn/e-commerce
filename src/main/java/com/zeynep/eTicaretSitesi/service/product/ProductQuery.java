@@ -25,4 +25,9 @@ public class ProductQuery {
     public List<ProductResponse> getProducts() {
         return productService.getAll();
     }
+
+    @QueryMapping
+    public List<ProductResponse> getProductsByCategory(@Argument Long categoryId) {
+        return productService.getByCategoryId(categoryId);
+    }
 }
