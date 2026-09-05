@@ -33,4 +33,11 @@ public class UserService extends BaseService<User, UserInput, Long, UserLogic, U
 
         return logic.toResponse(savedUser);
     }
+    public UserResponse getByEmail(String email) {
+        User user = repository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Kullanıcı bulunamadı."));
+
+        return mapper.toResponse(user);
+    }
+
 }

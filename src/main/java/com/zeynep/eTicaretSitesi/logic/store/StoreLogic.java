@@ -8,6 +8,8 @@ import com.zeynep.eTicaretSitesi.mapper.store.StoreMapper;
 import com.zeynep.eTicaretSitesi.repo.store.StoreRepository;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 public class StoreLogic extends BaseLogic<Store, Long, StoreRepository> {
 
@@ -15,13 +17,18 @@ public class StoreLogic extends BaseLogic<Store, Long, StoreRepository> {
 
     public StoreLogic(StoreRepository repository, StoreMapper mapper){
         super(repository);
-        this.mapper=mapper;
+        this.mapper = mapper;
     }
+
     public Store createStore(StoreInput input){
         return mapper.toEntity(input);
     }
+
     public StoreResponse toResponse(Store store){
         return mapper.toResponse(store);
     }
-    
+
+    public Optional<Store> findByOwnerId(Long ownerId) {
+        return repository.findByOwnerId(ownerId);
+    }
 }

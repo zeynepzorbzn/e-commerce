@@ -4,12 +4,19 @@ import com.zeynep.eTicaretSitesi.core.dao.BaseMapper;
 import com.zeynep.eTicaretSitesi.core.entity.ProductVariant;
 import com.zeynep.eTicaretSitesi.dto.productVariant.ProductVariantInput;
 import com.zeynep.eTicaretSitesi.dto.productVariant.ProductVariantResponse;
+import com.zeynep.eTicaretSitesi.mapper.productImage.ProductImageMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
 public class ProductVariantMapper extends BaseMapper<ProductVariant, ProductVariantInput, ProductVariantResponse> {
+
+    private final ProductImageMapper productImageMapper;
+
+    public ProductVariantMapper(ProductImageMapper productImageMapper) {
+        this.productImageMapper = productImageMapper;
+    }
 
     @Override
     public ProductVariant toEntity(ProductVariantInput input){
@@ -33,6 +40,7 @@ public class ProductVariantMapper extends BaseMapper<ProductVariant, ProductVari
 
         response.setProductId(variant.getProduct().getId());
         response.setProductName(variant.getProduct().getName());
+        response.setImages(variant.getImages().stream().map(productImageMapper::toResponse).toList());
 
         return response;
     }

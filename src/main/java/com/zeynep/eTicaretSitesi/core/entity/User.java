@@ -21,8 +21,10 @@ public class User extends BaseEntity implements UserDetails {
     private LocalDate birthDate;
     private String phoneNumber;
     private String emailVerificationToken;
+    @Column(nullable = false)
     private boolean emailVerified = false;
     private LocalDateTime emailVerificationExpireDate;
+    @Column(nullable = false)
     private boolean locked = false;
     @Column(unique = true, nullable = false)
     private String email;
@@ -131,7 +133,4 @@ public class User extends BaseEntity implements UserDetails {
 
     @Override
     public boolean isEnabled() {return true;}
-
-
-
 }

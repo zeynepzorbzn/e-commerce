@@ -15,16 +15,30 @@ public class ProductVariantMutation {
     public ProductVariantMutation(ProductVariantService productVariantService) {
         this.productVariantService = productVariantService;
     }
+
     @MutationMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'STORE_MANAGER')")
     public ProductVariantResponse createProductVariant(
             @Argument ProductVariantInput input) {
 
         return productVariantService.create(input);
     }
 
+    @MutationMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'STORE_MANAGER')")
+    public ProductVariantResponse updateProductVariant(
+            @Argument Long id,
+            @Argument ProductVariantInput input) {
 
+        return productVariantService.update(id, input);
+    }
 
+    @MutationMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'STORE_MANAGER')")
+    public Boolean deleteProductVariant(
+            @Argument Long id) {
 
-
+        productVariantService.delete(id);
+        return true;
+    }
 }

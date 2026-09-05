@@ -6,4 +6,5 @@ type OrderItemResponse {
     productName: String!
     size: String!
     color: String!
+    imageToken: String
 }

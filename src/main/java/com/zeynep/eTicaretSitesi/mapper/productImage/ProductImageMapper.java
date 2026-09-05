@@ -31,6 +31,11 @@ public class ProductImageMapper
         if (image.getProduct() != null) {
             response.setProductId(image.getProduct().getId());
         }
+        if (image.getProductVariant() != null) {
+            response.setVariantId(
+                    image.getProductVariant().getId()
+            );
+        }
 
         return response;
     }

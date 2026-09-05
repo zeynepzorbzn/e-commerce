@@ -4,6 +4,7 @@ import com.zeynep.eTicaretSitesi.core.dao.BaseEntity;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -22,6 +23,7 @@ public class Product extends BaseEntity {
 
     private String gender;
     private String season;
+    //private Integer stock;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id", nullable = false)
@@ -39,7 +41,7 @@ public class Product extends BaseEntity {
     private List<ProductImage> productImages;
 
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
-    private List<ProductVariant> variants;
+    private List<ProductVariant> variants= new ArrayList<>();
 
     public Product() {
     }
@@ -73,4 +75,12 @@ public class Product extends BaseEntity {
 
     public List<ProductVariant> getVariants() {return variants;}
     public void setVariants(List<ProductVariant> variants) { this.variants = variants;}
+
+//    public Integer getStock() {
+//        return stock;
+//    }
+//
+//    public void setStock(Integer stock) {
+//        this.stock = stock;
+//    }
 }

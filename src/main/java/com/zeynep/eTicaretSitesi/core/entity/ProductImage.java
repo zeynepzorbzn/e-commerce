@@ -14,6 +14,10 @@ public class ProductImage extends BaseEntity {
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_variant_id")
+    private ProductVariant productVariant;
+
     public ProductImage() {
     }
 
@@ -22,4 +26,12 @@ public class ProductImage extends BaseEntity {
 
     public Product getProduct() {return product;}
     public void setProduct(Product product) {this.product = product;}
+
+    public ProductVariant getProductVariant() {
+        return productVariant;
+    }
+
+    public void setProductVariant(ProductVariant productVariant) {
+        this.productVariant = productVariant;
+    }
 }

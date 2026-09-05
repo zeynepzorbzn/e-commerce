@@ -4,6 +4,7 @@ type UserResponse {
     lastName: String
     email: String
     birthDate: Date
+    phoneNumber: String
 }
 enum RoleName {
     USER

@@ -10,6 +10,8 @@ import com.zeynep.eTicaretSitesi.logic.store.StoreLogic;
 import com.zeynep.eTicaretSitesi.logic.user.UserLogic;
 import com.zeynep.eTicaretSitesi.mapper.store.StoreMapper;
 import com.zeynep.eTicaretSitesi.repo.store.StoreRepository;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -43,5 +45,28 @@ public class StoreService extends BaseService<Store, StoreInput, Long, StoreLogi
         Store savedStore = repository.save(store);
 
         return logic.toResponse(savedStore);
+
     }
+    public StoreResponse getMyStore() {
+
+        Authentication authentication =
+                SecurityContextHolder
+                        .getContext()
+                        .getAuthentication();
+
+        User user =
+                (User) authentication.getPrincipal();
+
+        Store store =
+                repository.findByOwnerId(user.getId())
+                        .orElseThrow(() ->
+                                new RuntimeException(
+                                        "Kullanıcıya ait mağaza bulunamadı."
+                                )
+                        );
+
+        return mapper.toResponse(store);
+    }
+
+
 }

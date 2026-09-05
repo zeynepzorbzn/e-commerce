@@ -26,6 +26,7 @@ public class OrderItemMapper extends BaseMapper<OrderItem, OrderItemInput, Order
         response.setId(item.getId());
         response.setQuantity(item.getQuantity());
         response.setUnitPrice(item.getUnitPrice());
+        response.setImageToken(item.getImageToken());
 
     if (item.getProductVariant() != null) {
          response.setProductVariantId(item.getProductVariant().getId());

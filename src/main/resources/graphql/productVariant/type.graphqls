@@ -5,4 +5,6 @@ type ProductVariantResponse {
     color: String!
     productId: ID!
     productName: String!
+    images: [ProductImageResponse!]!
+
 }

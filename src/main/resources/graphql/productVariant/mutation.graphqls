@@ -1,3 +1,12 @@
 extend type Mutation {
     createProductVariant(input: ProductVariantInput!): ProductVariantResponse
+
+    updateProductVariant(
+        id: ID!
+        input: ProductVariantInput!
+    ): ProductVariantResponse
+
+    deleteProductVariant(
+        id: ID!
+    ): Boolean!
 }

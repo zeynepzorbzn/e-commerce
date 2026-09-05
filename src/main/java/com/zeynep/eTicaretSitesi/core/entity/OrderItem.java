@@ -13,6 +13,7 @@ public class OrderItem extends BaseEntity {
 
     @Column(nullable = false)
     private BigDecimal unitPrice;
+    private String imageToken;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id", nullable = false)
@@ -37,4 +38,11 @@ public class OrderItem extends BaseEntity {
     public ProductVariant getProductVariant() {return productVariant;}
     public void setProductVariant(ProductVariant productVariant) {this.productVariant = productVariant;}
 
+    public String getImageToken() {
+        return imageToken;
+    }
+
+    public void setImageToken(String imageToken) {
+        this.imageToken = imageToken;
+    }
 }

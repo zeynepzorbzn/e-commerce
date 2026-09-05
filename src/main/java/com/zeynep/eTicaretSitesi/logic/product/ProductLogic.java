@@ -24,6 +24,10 @@ public class ProductLogic extends BaseLogic<Product, Long, ProductRepository> {
     public Product createProduct(ProductInput input) {
         return mapper.toEntity(input);
     }
+//    public Product updateProduct(ProductInput input) {
+//        return mapper.toEntity(input);
+//    }
+
 
     public ProductResponse toResponse(Product product) {
         return mapper.toResponse(product);
@@ -31,6 +35,9 @@ public class ProductLogic extends BaseLogic<Product, Long, ProductRepository> {
 
     public List<Product> getByCategoryId(Long categoryId) {
         return repository.findByCategory_Id(categoryId);
+    }
+
+    public List<Product> getByStoreId(Long storeId) {return repository.findByStore_Id(storeId);
     }
 
 }

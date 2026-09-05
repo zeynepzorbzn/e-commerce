@@ -3,4 +3,9 @@ extend type Mutation {
         productId: ID!
         imageToken: String!
     ): ProductImageResponse
+
+    addProductVariantImage(
+        variantId: ID!
+        imageToken: String!
+    ): ProductImageResponse
 }

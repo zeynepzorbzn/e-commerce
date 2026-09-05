@@ -3,6 +3,7 @@ package com.zeynep.eTicaretSitesi.core.entity;
 import com.zeynep.eTicaretSitesi.core.dao.BaseEntity;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -18,6 +19,8 @@ public class ProductVariant extends BaseEntity {
     private Product product;
     @OneToMany(mappedBy = "productVariant", fetch = FetchType.LAZY)
     private List<OrderItem> orderItems;
+    @OneToMany(mappedBy = "productVariant", fetch = FetchType.LAZY)
+    private List<ProductImage> images = new ArrayList<>();
 
     public ProductVariant() {
     }
@@ -36,4 +39,12 @@ public class ProductVariant extends BaseEntity {
 
     public List<OrderItem> getOrderItems() {return orderItems;}
     public void setOrderItems(List<OrderItem> orderItems) {this.orderItems = orderItems;}
+
+    public List<ProductImage> getImages() {
+        return images;
+    }
+
+    public void setImages(List<ProductImage> images) {
+        this.images = images;
+    }
 }

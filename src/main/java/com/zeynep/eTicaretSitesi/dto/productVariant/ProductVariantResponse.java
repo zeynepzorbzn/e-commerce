@@ -2,6 +2,9 @@ package com.zeynep.eTicaretSitesi.dto.productVariant;
 
 import com.zeynep.eTicaretSitesi.core.dao.BaseResponse;
 import com.zeynep.eTicaretSitesi.core.entity.ProductVariant;
+import com.zeynep.eTicaretSitesi.dto.productImage.ProductImageResponse;
+
+import java.util.List;
 
 public class ProductVariantResponse extends BaseResponse<ProductVariant> {
 
@@ -11,6 +14,7 @@ public class ProductVariantResponse extends BaseResponse<ProductVariant> {
     private String color;
     private Long productId;
     private String productName;
+    private List<ProductImageResponse> images;
 
     public ProductVariantResponse() {}
 
@@ -33,4 +37,11 @@ public class ProductVariantResponse extends BaseResponse<ProductVariant> {
     public void setProductName(String productName) {this.productName = productName;}
 
 
+    public List<ProductImageResponse> getImages() {
+        return images;
+    }
+
+    public void setImages(List<ProductImageResponse> images) {
+        this.images = images;
+    }
 }

@@ -1,3 +1,10 @@
 extend type Mutation {
     createProduct(input: ProductInput!): ProductResponse
+
+    updateProduct(
+        id: ID!
+        input: ProductInput!
+    ): ProductResponse
+
+    deleteProduct(id: ID!): Boolean
 }

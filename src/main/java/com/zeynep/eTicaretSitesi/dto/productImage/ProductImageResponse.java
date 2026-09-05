@@ -8,6 +8,7 @@ public class ProductImageResponse extends BaseResponse<ProductImage> {
     private Long id;
     private String imageToken;
     private Long productId;
+    private Long variantId;
 
     public ProductImageResponse() {
     }
@@ -34,5 +35,13 @@ public class ProductImageResponse extends BaseResponse<ProductImage> {
 
     public void setProductId(Long productId) {
         this.productId = productId;
+    }
+
+    public Long getVariantId() {
+        return variantId;
+    }
+
+    public void setVariantId(Long variantId) {
+        this.variantId = variantId;
     }
 }

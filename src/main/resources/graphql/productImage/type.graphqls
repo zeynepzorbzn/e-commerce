@@ -1,5 +1,6 @@
 type ProductImageResponse {
     id: ID!
     imageToken: String!
-    productId: ID!
+    productId: ID
+    variantId: ID
 }

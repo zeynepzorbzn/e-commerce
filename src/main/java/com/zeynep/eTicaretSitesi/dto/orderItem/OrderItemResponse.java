@@ -15,6 +15,7 @@ public class OrderItemResponse extends BaseResponse<OrderItem> {
     private String productName;
     private String size;
     private String color;
+    private String imageToken;
 
     public OrderItemResponse() {
     }
@@ -73,5 +74,13 @@ public class OrderItemResponse extends BaseResponse<OrderItem> {
 
     public void setColor(String color) {
         this.color = color;
+    }
+
+    public String getImageToken() {
+        return imageToken;
+    }
+
+    public void setImageToken(String imageToken) {
+        this.imageToken = imageToken;
     }
 }

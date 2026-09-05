@@ -33,6 +33,14 @@ public class UserQuery extends BaseQuery<User, UserInput, Long, UserLogic, UserM
         return service.getById(id);
     }
 
+    @QueryMapping
+    public UserResponse me() {
+        Authentication authentication =
+                SecurityContextHolder.getContext().getAuthentication();
+
+        return ((UserService) service).getByEmail(authentication.getName());
+    }
+
 
 
 

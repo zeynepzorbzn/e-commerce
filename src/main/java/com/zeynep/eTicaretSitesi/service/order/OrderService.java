@@ -139,6 +139,12 @@ public class OrderService extends BaseService<Order, OrderInput, Long, OrderLogi
              * eski siparişin fiyatı değişmeyecek.
              */
             BigDecimal unitPrice = variant.getProduct().getPrice();
+            if (variant.getImages() != null && !variant.getImages().isEmpty()) {
+                orderItem.setImageToken(
+                        variant.getImages().get(0).getImageToken()
+                );
+            }
+
             orderItem.setUnitPrice(unitPrice);
             OrderItem savedOrderItem = orderItemRepository.save(orderItem);
             orderItems.add(savedOrderItem);

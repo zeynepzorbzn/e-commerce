@@ -12,6 +12,7 @@ public class ProductInput extends BaseInput<Product> {
     private BigDecimal price;
     private String gender;
     private String season;
+    //private Integer stock;
 
     private Long storeId;
     private Long brandId;
@@ -43,4 +44,12 @@ public class ProductInput extends BaseInput<Product> {
 
     public Long getCategoryId() {return categoryId;}
     public void setCategoryId(Long categoryId) {this.categoryId = categoryId;}
+
+//    public Integer getStock() {
+//        return stock;
+//    }
+//
+//    public void setStock(Integer stock) {
+//        this.stock = stock;
+//    }
 }

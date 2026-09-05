@@ -16,6 +16,7 @@ public class ProductResponse extends BaseResponse<Product> {
     private BigDecimal price;
     private String gender;
     private String season;
+    private Integer stock;
 
     private String storeName;
     private String brandName;
@@ -63,4 +64,12 @@ public class ProductResponse extends BaseResponse<Product> {
     public void setImages(List<ProductImageResponse> images) {
         this.images = images;
     }
+
+//    public Integer getStock() {
+//        return stock;
+//    }
+//
+//    public void setStock(Integer stock) {
+//        this.stock = stock;
+//    }
 }

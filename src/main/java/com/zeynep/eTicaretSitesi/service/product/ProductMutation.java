@@ -17,8 +17,24 @@ public class ProductMutation {
     }
 
     @MutationMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'STORE_MANAGER')")
     public ProductResponse createProduct(@Argument ProductInput input) {
         return productService.create(input);
+    }
+
+    @MutationMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'STORE_MANAGER')")
+    public ProductResponse updateProduct(
+            @Argument Long id,
+            @Argument ProductInput input
+    ) {
+        return productService.updateProduct(id, input);
+    }
+
+    @MutationMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'STORE_MANAGER')")
+    public Boolean deleteProduct(@Argument Long id) {
+        productService.delete(id);
+        return true;
     }
 }
