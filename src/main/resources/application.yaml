@@ -18,11 +18,28 @@ spring:
       enabled: true
     http:
       path: /graphql
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
 server:
   port: 8000
 
 file-service:
   url: http://localhost:8001
+
+mail:
+  from: ${MAIL_FROM:${MAIL_USERNAME}}
 
 jwt:
   secret: Qm9yN2xYV2R4TnJzVjVhSzJQeEZtY0p4OE5iU3dLdFlwUmhWcUZnWA==

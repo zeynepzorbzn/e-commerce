@@ -77,6 +77,21 @@ import java.util.List;
          return logic.getByCategoryId(categoryId).stream().map(logic::toResponse).toList();
 
      }
+    public List<ProductResponse> searchProducts(String query, Long categoryId) {
+
+        String normalizedQuery = query == null
+                ? ""
+                : query.trim();
+
+        if (normalizedQuery.isBlank()) {
+
+            return categoryId == null
+                    ? getAll()
+                    : getByCategoryId(categoryId);
+        }
+
+        return repository.searchProducts(normalizedQuery, categoryId).stream().map(logic::toResponse).toList();
+    }
     public List<ProductResponse> getMyStoreProducts() {
 
         Authentication authentication =

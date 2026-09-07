@@ -32,6 +32,10 @@ public class ProductQuery {
         return productService.getByCategoryId(categoryId);
     }
     @QueryMapping
+    public List<ProductResponse> searchProducts(@Argument String query, @Argument Long categoryId) {
+        return productService.searchProducts(query, categoryId);
+    }
+    @QueryMapping
     @PreAuthorize("hasRole('STORE_MANAGER')")
     public List<ProductResponse> getMyStoreProducts() {
         return productService.getMyStoreProducts();

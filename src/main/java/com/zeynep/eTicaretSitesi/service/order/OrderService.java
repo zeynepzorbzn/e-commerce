@@ -17,7 +17,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.zeynep.eTicaretSitesi.service.mail.OrderCreatedEvent;
+import org.springframework.context.ApplicationEventPublisher;
+import com.zeynep.eTicaretSitesi.service.mail.OrderMailItem;
 
+import java.time.format.DateTimeFormatter;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,9 +36,10 @@ public class OrderService extends BaseService<Order, OrderInput, Long, OrderLogi
     private final ProductVariantRepository productVariantRepository;
     private final AddressRepository addressRepository;
     private final PaymentMethodRepository paymentMethodRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
     public OrderService(OrderRepository repository, OrderLogic logic, OrderMapper mapper, CartRepository cartRepository, CartItemRepository cartItemRepository, OrderItemRepository orderItemRepository,
-             ProductVariantRepository productVariantRepository, AddressRepository addressRepository, PaymentMethodRepository paymentMethodRepository) {
+             ProductVariantRepository productVariantRepository, AddressRepository addressRepository, PaymentMethodRepository paymentMethodRepository, ApplicationEventPublisher eventPublisher) {
 
         super(repository, logic, mapper);
 
@@ -44,6 +49,7 @@ public class OrderService extends BaseService<Order, OrderInput, Long, OrderLogi
         this.productVariantRepository = productVariantRepository;
         this.addressRepository = addressRepository;
         this.paymentMethodRepository = paymentMethodRepository;
+        this.eventPublisher = eventPublisher;
     }
 
     @Transactional
@@ -180,6 +186,59 @@ public class OrderService extends BaseService<Order, OrderInput, Long, OrderLogi
         cart.setProductCount(0);
 
         cartRepository.save(cart);
+
+        /*
+         * Mail için sipariş bilgilerini transaction içerisindeyken
+         * snapshot olarak hazırlıyoruz.
+         *
+         * Böylece transaction kapandıktan sonra lazy JPA ilişkilerine
+         * tekrar erişmek zorunda kalmıyoruz.
+         */
+        List<OrderMailItem> mailItems = new ArrayList<>();
+
+        for (OrderItem orderItem : orderItems) {
+
+            ProductVariant variant = orderItem.getProductVariant();
+
+            mailItems.add(
+                    new OrderMailItem(
+                            variant.getProduct().getName(),
+                            variant.getSize(),
+                            variant.getColor(),
+                            orderItem.getQuantity(),
+                            orderItem.getUnitPrice()
+                    )
+            );
+        }
+
+        String customerName =
+                user.getFirstName() + " " + user.getLastName();
+
+        String orderDate =
+                finalOrder.getCreatedAt()
+                        .format(
+                                DateTimeFormatter.ofPattern(
+                                        "dd.MM.yyyy HH:mm"
+                                )
+                        );
+
+        eventPublisher.publishEvent(
+                new OrderCreatedEvent(
+                        user.getEmail(),
+                        customerName,
+                        finalOrder.getCode(),
+                        orderDate,
+                        finalOrder.getTotalPrice().toString(),
+
+                        address.getName(),
+                        address.getCity(),
+                        address.getDistrict(),
+                        address.getStreet(),
+                        address.getPostalCode(),
+
+                        mailItems
+                )
+        );
 
         return logic.toResponse(finalOrder);
     }

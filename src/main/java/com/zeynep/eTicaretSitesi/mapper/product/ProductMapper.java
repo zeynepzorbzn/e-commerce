@@ -75,18 +75,32 @@ public class ProductMapper
                     return variantResponse;
                     }).toList());
 
-        response.setImages(product.getProductImages() == null ? List.of() : product.getProductImages().stream().map(image -> {
+        response.setImages(
+                product.getProductImages() == null
+                        ? List.of()
+                        : product.getProductImages()
+                        .stream()
+                        .filter(image -> image.getProductVariant() == null)
+                        .map(image -> {
 
-        ProductImageResponse imageResponse = new ProductImageResponse();
+                            ProductImageResponse imageResponse =
+                                    new ProductImageResponse();
 
-        imageResponse.setId(image.getId());
-        imageResponse.setImageToken(image.getImageToken());
+                            imageResponse.setId(image.getId());
+                            imageResponse.setImageToken(
+                                    image.getImageToken()
+                            );
 
-         if (image.getProduct() != null) {
-             imageResponse.setProductId(image.getProduct().getId());
-         }
-         return imageResponse;
-                }).toList()
+                            if (image.getProduct() != null) {
+                                imageResponse.setProductId(
+                                        image.getProduct().getId()
+                                );
+                            }
+
+                            return imageResponse;
+
+                        })
+                        .toList()
         );
         return response;
     }

@@ -2,5 +2,6 @@ extend type Query {
     getProduct(id: ID!): ProductResponse
     getProducts: [ProductResponse!]!
     getProductsByCategory(categoryId: ID!): [ProductResponse!]!
+    searchProducts(query: String!, categoryId: ID): [ProductResponse!]!
     getMyStoreProducts: [ProductResponse!]!
 }
