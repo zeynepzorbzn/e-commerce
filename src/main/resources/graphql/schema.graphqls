@@ -6,6 +6,27 @@ schema {
 type Query {}
 type Mutation {}
 
+enum AnalyticsEventType {
+    VIEW_PRODUCT
+    ADD_TO_CART
+    PURCHASE
+}
+
+input AnalyticsEventInput {
+    eventType: AnalyticsEventType!
+    productId: ID
+    storeId: ID
+    categoryId: ID
+    brandId: ID
+    orderId: ID
+    sessionId: String
+    value: BigDecimal
+}
+
+extend type Mutation {
+    trackAnalyticsEvent(input: AnalyticsEventInput!): Boolean!
+}
+
 scalar Long
 scalar Date
 scalar DateTime

@@ -1,4 +1,3 @@
-
 spring:
   application:
     name: eTicaretSitesi
@@ -32,6 +31,15 @@ spring:
           connectiontimeout: 5000
           timeout: 5000
           writetimeout: 5000
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:guest}
+    password: ${RABBITMQ_PASSWORD:guest}
+    connection-timeout: 5000
+
+
+
 server:
   port: 8000
 
@@ -45,4 +53,9 @@ jwt:
   secret: Qm9yN2xYV2R4TnJzVjVhSzJQeEZtY0p4OE5iU3dLdFlwUmhWcUZnWA==
   access-expiration: 3600000
   refresh-expiration: 604800000
+
+logging:
+level:
+  org.springframework.amqp.rabbit: DEBUG
+  org.springframework.amqp.rabbit.connection: DEBUG
 

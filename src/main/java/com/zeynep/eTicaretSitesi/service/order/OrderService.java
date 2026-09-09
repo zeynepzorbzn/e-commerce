@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.zeynep.eTicaretSitesi.service.mail.OrderCreatedEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import com.zeynep.eTicaretSitesi.service.mail.OrderMailItem;
+import com.zeynep.eTicaretSitesi.service.analytics.AnalyticsEventService;
 
 import java.time.format.DateTimeFormatter;
 import java.math.BigDecimal;
@@ -37,9 +38,11 @@ public class OrderService extends BaseService<Order, OrderInput, Long, OrderLogi
     private final AddressRepository addressRepository;
     private final PaymentMethodRepository paymentMethodRepository;
     private final ApplicationEventPublisher eventPublisher;
+    private final AnalyticsEventService analyticsEventService;
 
     public OrderService(OrderRepository repository, OrderLogic logic, OrderMapper mapper, CartRepository cartRepository, CartItemRepository cartItemRepository, OrderItemRepository orderItemRepository,
-             ProductVariantRepository productVariantRepository, AddressRepository addressRepository, PaymentMethodRepository paymentMethodRepository, ApplicationEventPublisher eventPublisher) {
+             ProductVariantRepository productVariantRepository, AddressRepository addressRepository, PaymentMethodRepository paymentMethodRepository, ApplicationEventPublisher eventPublisher,
+                        AnalyticsEventService analyticsEventService) {
 
         super(repository, logic, mapper);
 
@@ -50,6 +53,7 @@ public class OrderService extends BaseService<Order, OrderInput, Long, OrderLogi
         this.addressRepository = addressRepository;
         this.paymentMethodRepository = paymentMethodRepository;
         this.eventPublisher = eventPublisher;
+        this.analyticsEventService = analyticsEventService;
     }
 
     @Transactional
@@ -221,6 +225,31 @@ public class OrderService extends BaseService<Order, OrderInput, Long, OrderLogi
                                         "dd.MM.yyyy HH:mm"
                                 )
                         );
+        /*
+         * Analytics: PURCHASE
+         *
+         * Sipariş başarıyla oluşturulduktan sonra
+         * satın alma eventini kaydediyoruz.
+         */
+        try {
+            analyticsEventService.track(
+                    com.zeynep.eTicaretSitesi.core.enums.AnalyticsEventType.PURCHASE,
+                    user.getId(),
+                    null,
+                    null,
+                    null,
+                    null,
+                    finalOrder.getId(),
+                    null,
+                    finalOrder.getTotalPrice(),
+                    null
+            );
+        } catch (Exception analyticsError) {
+            System.err.println(
+                    "Analytics PURCHASE event kaydedilemedi: "
+                            + analyticsError.getMessage()
+            );
+        }
 
         eventPublisher.publishEvent(
                 new OrderCreatedEvent(
