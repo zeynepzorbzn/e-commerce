@@ -1,0 +1,26 @@
+extend type Query {
+
+    getPlatformAnalytics(
+        date: Date!
+    ): PlatformAnalyticsResponse!
+
+    getStoreAnalytics(
+        date: Date!
+    ): [StoreAnalyticsResponse!]!
+
+    getMyStoreAnalytics(
+        date: Date!
+    ): StoreAnalyticsResponse!
+
+    getMyProductAnalytics(
+        date: Date!
+    ): [ProductAnalyticsResponse!]!
+
+    getTopViewedProducts(
+        date: Date!
+    ): [ProductAnalyticsResponse!]!
+
+    getTopSellingProducts(
+        date: Date!
+    ): [ProductAnalyticsResponse!]!
+}

@@ -27,6 +27,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.Map;
 
 @Service
 public class OrderService extends BaseService<Order, OrderInput, Long, OrderLogic, OrderMapper, OrderRepository, OrderResponse> {
@@ -190,6 +191,48 @@ public class OrderService extends BaseService<Order, OrderInput, Long, OrderLogi
         cart.setProductCount(0);
 
         cartRepository.save(cart);
+        /*
+         * Analytics: PURCHASE
+         *
+         * Her OrderItem için ayrı purchase event oluşturuyoruz.
+         * Böylece ürün, mağaza, kategori ve marka bazlı
+         * satış analitiği doğru şekilde hesaplanabilir.
+         */
+        for (OrderItem orderItem : orderItems) {
+
+            try {
+                ProductVariant variant = orderItem.getProductVariant();
+                Product product = variant.getProduct();
+
+                BigDecimal itemTotal =
+                        orderItem.getUnitPrice()
+                                .multiply(
+                                        BigDecimal.valueOf(orderItem.getQuantity())
+                                );
+
+                analyticsEventService.track(
+                        com.zeynep.eTicaretSitesi.core.enums.AnalyticsEventType.PURCHASE,
+                        user.getId(),
+                        product.getStore().getId(),
+                        product.getId(),
+                        product.getCategory().getId(),
+                        product.getBrand().getId(),
+                        finalOrder.getId(),
+                        null,
+                        itemTotal,
+                        Map.of(
+                                "quantity", orderItem.getQuantity(),
+                                "unitPrice", orderItem.getUnitPrice().toString()
+                        )
+                );
+
+            } catch (Exception analyticsError) {
+                System.err.println(
+                        "Analytics PURCHASE event kaydedilemedi: "
+                                + analyticsError.getMessage()
+                );
+            }
+        }
 
         /*
          * Mail için sipariş bilgilerini transaction içerisindeyken
@@ -231,25 +274,25 @@ public class OrderService extends BaseService<Order, OrderInput, Long, OrderLogi
          * Sipariş başarıyla oluşturulduktan sonra
          * satın alma eventini kaydediyoruz.
          */
-        try {
-            analyticsEventService.track(
-                    com.zeynep.eTicaretSitesi.core.enums.AnalyticsEventType.PURCHASE,
-                    user.getId(),
-                    null,
-                    null,
-                    null,
-                    null,
-                    finalOrder.getId(),
-                    null,
-                    finalOrder.getTotalPrice(),
-                    null
-            );
-        } catch (Exception analyticsError) {
-            System.err.println(
-                    "Analytics PURCHASE event kaydedilemedi: "
-                            + analyticsError.getMessage()
-            );
-        }
+//        try {
+//            analyticsEventService.track(
+//                    com.zeynep.eTicaretSitesi.core.enums.AnalyticsEventType.PURCHASE,
+//                    user.getId(),
+//                    null,
+//                    null,
+//                    null,
+//                    null,
+//                    finalOrder.getId(),
+//                    null,
+//                    finalOrder.getTotalPrice(),
+//                    null
+//            );
+//        } catch (Exception analyticsError) {
+//            System.err.println(
+//                    "Analytics PURCHASE event kaydedilemedi: "
+//                            + analyticsError.getMessage()
+//            );
+//        }
 
         eventPublisher.publishEvent(
                 new OrderCreatedEvent(
